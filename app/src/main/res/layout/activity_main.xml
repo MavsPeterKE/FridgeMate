@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.peter_pc.fridgemate.ui.MainActivity">
+
+    <Button
+        android:id="@+id/scanBarcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scandate"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/scandate"
+        android:layout_marginTop="22dp"
+        android:layout_marginRight="20dp"
+        android:text="Scan Barcode" />
+
+    <TextView
+        android:id="@+id/tvBcodeHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scandate"
+        android:layout_below="@+id/scanBarcode"
+        android:layout_alignStart="@+id/scandate"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:layout_marginRight="20dp"
+        android:textColor="#FFC107"
+        android:text="Barcode" />
+    <TextView
+        android:id="@+id/tvitemHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scanBarcode"
+        android:layout_alignStart="@+id/scanBarcode"
+        android:layout_below="@+id/tvBcodeHeader"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="80dp"
+        android:text="Coffee"
+        android:visibility="gone"
+        android:textColor="#FFC107"
+        />
+
+    <EditText
+        android:id="@+id/itemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scanBarcode"
+        android:layout_alignStart="@+id/scanBarcode"
+        android:layout_below="@+id/tvBcodeHeader"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Item Name"/>
+
+
+    <Button
+        android:id="@+id/scandate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itemName"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Scan Date" />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_below="@id/scandate"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:datePickerMode="spinner"
+        android:visibility="gone"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_below="@id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+
+    <TextView
+        android:id="@+id/tvSavedItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fab"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:layout_toEndOf="@+id/tvBcodeHeader"
+        android:layout_toRightOf="@+id/tvBcodeHeader"
+        android:text="Saved Items: " />
+
+    <TextView
+        android:id="@+id/dateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/scandate"
+        android:textColor="#FFC107"
+        android:layout_marginTop="20dp"
+        android:text="TextView" />
+
+</RelativeLayout>
