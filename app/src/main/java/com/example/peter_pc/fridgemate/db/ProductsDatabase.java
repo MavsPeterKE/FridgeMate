@@ -8,7 +8,7 @@ import android.content.Context;
 /**
  * Created by Peter-PC on 3/6/2018.
  */
-@Database(entities = {ProductModel.class},version = 5)
+@Database(entities = {ProductModel.class},version = 7)
 public abstract class ProductsDatabase extends RoomDatabase {
     private static  ProductsDatabase INSTANCE;
 

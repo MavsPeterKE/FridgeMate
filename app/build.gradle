@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
     implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
+    implementation "me.leolin:ShortcutBadger:1.1.21@aar"
 
 
 

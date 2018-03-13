@@ -8,8 +8,8 @@
     android:padding="16dp">
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/foodImage"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -57,5 +57,30 @@
         android:layout_marginRight="5dp"
         android:textSize="16sp"
         tools:text="366 Days left to Expire" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/badge_icon"
+            />
+        <TextView
+            android:id="@+id/tvCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="10sp"
+            android:text="40"
+            />
+
+    </RelativeLayout>
 
 </RelativeLayout>
