@@ -1,13 +1,19 @@
 package com.example.peter_pc.fridgemate.viewmodels;
 
 import android.app.Application;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.peter_pc.fridgemate.db.ProductModel;
+import com.example.peter_pc.fridgemate.R;
+import com.example.peter_pc.fridgemate.models.ProductModel;
 import com.example.peter_pc.fridgemate.db.ProductsDatabase;
 
 import java.util.List;
@@ -21,16 +27,19 @@ public class ProductViewModel extends AndroidViewModel {
     //creates database instance
     private ProductsDatabase appDatabase;
 
-    //creates livedata instance
+    Context context;
+
+    //creates liveData instance
     private final LiveData<List<ProductModel>> productsList;
 
     public ProductViewModel(@NonNull Application application) {
         super(application);
+        context=application.getApplicationContext();
         appDatabase=ProductsDatabase.getDatabase(this.getApplication());
         productsList =appDatabase.productDao().getAllProducts() ;
     }
 
-    //expose livedata to other classes
+    //expose liveData to other classes
     public LiveData<List<ProductModel>> getItems() {
 
         return productsList;
@@ -62,5 +71,6 @@ public class ProductViewModel extends AndroidViewModel {
 
 
     }
+
 
 }

@@ -5,6 +5,8 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.example.peter_pc.fridgemate.models.ProductModel;
+
 /**
  * Created by Peter-PC on 3/6/2018.
  */

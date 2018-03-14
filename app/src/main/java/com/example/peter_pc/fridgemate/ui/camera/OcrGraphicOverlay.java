@@ -34,7 +34,7 @@ import java.util.Set;
  * idea is that detection items are expressed in terms of a preview size, but need to be scaled up
  * to the full view size, and also mirrored in the case of the front-facing camera.<p>
  *
- * Associated {@link Graphic} items should use the following methods to convert to view coordinates
+ * Associated {@link Graphic} items should use the following Methods to convert to view coordinates
  * for the graphics that are drawn:
  * <ol>
  * <li>{@link Graphic#scaleX(float)} and {@link Graphic#scaleY(float)} adjust the size of the
@@ -65,7 +65,7 @@ public class OcrGraphicOverlay<T extends OcrGraphicOverlay.Graphic> extends View
         }
 
         /**
-         * Draw the graphic on the supplied canvas.  Drawing should use the following methods to
+         * Draw the graphic on the supplied canvas.  Drawing should use the following Methods to
          * convert to view coordinates for the graphics that are drawn:
          * <ol>
          * <li>{@link Graphic#scaleX(float)} and {@link Graphic#scaleY(float)} adjust the size of

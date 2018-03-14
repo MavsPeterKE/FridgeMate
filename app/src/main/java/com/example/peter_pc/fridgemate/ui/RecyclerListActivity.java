@@ -13,10 +13,13 @@ import android.view.View;
 
 import com.example.peter_pc.fridgemate.R;
 import com.example.peter_pc.fridgemate.adapters.RecyclerViewAdapter;
-import com.example.peter_pc.fridgemate.db.ProductModel;
+import com.example.peter_pc.fridgemate.models.ProductModel;
+import com.example.peter_pc.fridgemate.utils.Methods;
+import com.example.peter_pc.fridgemate.utils.NotificationUtils;
 import com.example.peter_pc.fridgemate.utils.SimpleDecorator;
 import com.example.peter_pc.fridgemate.viewmodels.ProductViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerListActivity extends AppCompatActivity {
@@ -54,44 +57,26 @@ public class RecyclerListActivity extends AppCompatActivity {
                     mRecyclerView.addItemDecoration(new SimpleDecorator(getApplicationContext()));
                     //listDecorator();
                     mRecyclerView.setAdapter(mAdapter);
+                    processNotificationDate(products);
                 }
             }
 
-            private void listDecorator() {
-                mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-                    @Override
-                    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                        super.onDraw(c, parent, state);
-                    }
-
-                    @Override
-                    public void onDraw(Canvas c, RecyclerView parent) {
-                        super.onDraw(c, parent);
-                    }
-
-                    @Override
-                    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                        super.onDrawOver(c, parent, state);
-                    }
-
-                    @Override
-                    public void onDrawOver(Canvas c, RecyclerView parent) {
-                        super.onDrawOver(c, parent);
-                    }
-
-                    @Override
-                    public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
-                        super.getItemOffsets(outRect, itemPosition, parent);
-                    }
-
-                    @Override
-                    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                        super.getItemOffsets(outRect, view, parent, state);
-                    }
-                });
-            }
         });
 
 
+    }
+
+    public void processNotificationDate( List<ProductModel> products){
+        ArrayList<String>expiring_products= new ArrayList<>();
+        int allExpiring=0,productsRemaining=0;
+        for (ProductModel product:products){
+            if (new Methods().getRemainingDays(product.getExpiryDate())>=1 && new Methods().getRemainingDays(product.getExpiryDate())<5){
+            expiring_products.add(product.getProductName()+" "+new Methods().getRemainingDays(product.getExpiryDate())+" day (s) Left");
+        }
+            if (new Methods().getRemainingDays(product.getExpiryDate()) >0 && new Methods().getRemainingDays(product.getExpiryDate()) >5) {
+                allExpiring += 1;
+            }
+        }
+        new NotificationUtils(this).inboxStyleNotification(expiring_products,allExpiring,productsRemaining);
     }
 }

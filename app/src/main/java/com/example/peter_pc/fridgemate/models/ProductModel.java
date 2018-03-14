@@ -1,4 +1,4 @@
-package com.example.peter_pc.fridgemate.db;
+package com.example.peter_pc.fridgemate.models;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

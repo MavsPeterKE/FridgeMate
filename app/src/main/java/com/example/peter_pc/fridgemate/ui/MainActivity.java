@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,23 +15,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.db.ProductModel;
+import com.example.peter_pc.fridgemate.models.ProductModel;
+import com.example.peter_pc.fridgemate.utils.NotificationUtils;
 import com.example.peter_pc.fridgemate.viewmodels.ProductViewModel;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MainActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener {
     protected  @BindView(R.id.scanBarcode)      Button    btnScanBarcode;
@@ -53,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
     private ProductViewModel productViewModel;
     private String barCode,expiryDate;
     private  String expiryTime;
-    private  static final String CHANNEL_ID="Ex01";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +58,9 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
         calendar = Calendar.getInstance();
         datePickerDialog=new DatePickerDialog(this,MainActivity.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         productViewModel= ViewModelProviders.of(this).get(ProductViewModel.class);
-
-    }
-
-    public void notifyUser(){
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.badge_icon)
-                .setContentTitle("Product Expiry")
-                .setContentText("Several Fruits due. Act First")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
+        NotificationUtils notify=new NotificationUtils(this);
+        //notify.notifyUser("Products About to Expire!",40,"Fruits and Drinks are almost expiring. Act");
+       // notify.inboxStyleNotification();
     }
 
     @OnClick(R.id.tvSavedItems)
@@ -170,5 +158,7 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
         date = calendar.getTime();
         expiryTime= Objects.toString(date.getTime(),"0");
     }
+
+
 }
 

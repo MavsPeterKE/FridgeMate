@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FridgeMate.iml" filepath="$PROJECT_DIR$/FridgeMate.iml" />
-      <module fileurl="file://D:\FridgeMate\FridgeMate.iml" filepath="D:\FridgeMate\FridgeMate.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\FridgeMate\app\app.iml" filepath="D:\FridgeMate\app\app.iml" />
     </modules>
   </component>
 </project>
