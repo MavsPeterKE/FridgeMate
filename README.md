@@ -7,10 +7,15 @@ The project uses mobile vision API For both barcode scanning and date scanning.
 
 Structure( Tries to emulate MVVP)
 packages
+
 ui-contains barcode and ocr activities and dependencies as well
+
 db- contains the apps db creator
+
 adapters - contains recycler/list adapters used
+
 viewModels - contains the logic for my view in regard to data retrieval
+
 utils - contains helper/essential classes used such as the recyclerItem decorator
 
 
