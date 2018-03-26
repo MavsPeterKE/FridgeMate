@@ -41,7 +41,7 @@
     <color name="darkgreen">#00796b</color>
     <color name="profilegreen">#009688</color>
 
-    <color name="title_separator">#d9d9d9</color>
+    <color name="light_grey">#d9d9d9</color>
     <color name="grey">#7e7e7e</color>
 
     <!-- A light Holo shade of blue -->

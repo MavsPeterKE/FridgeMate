@@ -80,9 +80,9 @@ public class NotificationUtils {
         Notification.Builder builder=new Notification.Builder(context)
                 .setSmallIcon(R.drawable.expires)
                 .setColor(Color.RED)
-                .setContentTitle(productNumbers+" "+"Products About to Expire")
+                .setContentTitle(productNumbers+" "+Constants.EXPIRY_NOTICE)
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                .setContentText("Several Items Expiring Soon. Check  them out.")
+                .setContentText(Constants.EXPIRY_TEXT_)
                 //.setColor(Color.RED)
                 .setContentIntent(resultPendingIntent);
 
@@ -96,7 +96,7 @@ public class NotificationUtils {
                 //.addLine(addLine3)
                 /*.addLine(addLine4)
                 .addLine(addLine5)*/
-                .setBigContentTitle("Products Expiring Soon")
+                .setBigContentTitle(Constants.EXPIRY_INBOX_ALERT)
                 .setSummaryText(remProducts+ " more")
                 .build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

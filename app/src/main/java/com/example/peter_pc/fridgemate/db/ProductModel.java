@@ -1,5 +1,6 @@
-package com.example.peter_pc.fridgemate.models;
+package com.example.peter_pc.fridgemate.db;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -7,15 +8,23 @@ import android.arch.persistence.room.PrimaryKey;
  * Created by Peter-PC on 3/6/2018.
  */
 
-@Entity
+@Entity(tableName = "products_table")
 public class ProductModel {
 
     //Defines your table fields
     @PrimaryKey(autoGenerate = true)
     public int id;
+
+    @ColumnInfo(name = " product_name")
     private String productName;
+
+    @ColumnInfo(name = " product_barcode")
     private String productBcode;
+
+    @ColumnInfo(name = " expiry_date")
     private String expiryDate;
+
+    @ColumnInfo(name = " days_remaining")
     private String daysRemaining;
 
     //creates the class Constructor

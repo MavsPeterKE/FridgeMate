@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
     implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
     implementation "me.leolin:ShortcutBadger:1.1.21@aar"
+    compile 'me.dm7.barcodescanner:zxing:1.9.8'
 
 
 

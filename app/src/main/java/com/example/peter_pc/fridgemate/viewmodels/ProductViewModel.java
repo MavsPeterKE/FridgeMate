@@ -1,19 +1,14 @@
 package com.example.peter_pc.fridgemate.viewmodels;
 
 import android.app.Application;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.models.ProductModel;
+import com.example.peter_pc.fridgemate.db.ProductModel;
 import com.example.peter_pc.fridgemate.db.ProductsDatabase;
 
 import java.util.List;
@@ -23,7 +18,7 @@ import java.util.List;
  */
 
 public class ProductViewModel extends AndroidViewModel {
-    
+
     //creates database instance
     private ProductsDatabase appDatabase;
 
@@ -34,9 +29,9 @@ public class ProductViewModel extends AndroidViewModel {
 
     public ProductViewModel(@NonNull Application application) {
         super(application);
-        context=application.getApplicationContext();
-        appDatabase=ProductsDatabase.getDatabase(this.getApplication());
-        productsList =appDatabase.productDao().getAllProducts() ;
+        context = application.getApplicationContext();
+        appDatabase = ProductsDatabase.getDatabase(this.getApplication());
+        productsList = appDatabase.productDao().getAllProducts();
     }
 
     //expose liveData to other classes
@@ -45,19 +40,19 @@ public class ProductViewModel extends AndroidViewModel {
         return productsList;
     }
 
-    //executes the asynch task
+    //executes the  save async task
     public void saveProduct(final ProductModel productModel) {
 
-        new saveAsyncTask(appDatabase).execute(productModel);
+        new SaveAsyncTask(appDatabase).execute(productModel);
+        //DbOperation.executeBackground(context,productModel);
     }
 
-
-    /*you cannot manipulate room from the main thread. This threat performs the database operation*/
-    private static class saveAsyncTask extends AsyncTask<ProductModel, Void, Void> {
+    /*you cannot manipulate room from the main thread. This thread performs the database operation*/
+    private static class SaveAsyncTask extends AsyncTask<ProductModel, Void, Void> {
 
         private ProductsDatabase db;
 
-        saveAsyncTask(ProductsDatabase appDatabase) {
+        SaveAsyncTask(ProductsDatabase appDatabase) {
             db = appDatabase;
         }
 
@@ -65,12 +60,32 @@ public class ProductViewModel extends AndroidViewModel {
         protected Void doInBackground(final ProductModel... params) {
             db.productDao().insertProduct(params[0]);
 
-            Log.d("inserted",params[0].getProductName());
+            Log.d("inserted", params[0].getProductName());
             return null;
         }
 
+    }
 
+    //executes the  save async task
+    public void getProductsCount() {
+        new productsCountAsyncTask(appDatabase);
     }
 
 
+    /*you cannot manipulate room from the main thread. This thread performs the database operation*/
+    private static class productsCountAsyncTask extends AsyncTask<ProductModel, Void, Void> {
+
+        private ProductsDatabase db;
+
+        productsCountAsyncTask(ProductsDatabase appDatabase) {
+            db = appDatabase;
+        }
+
+        @Override
+        protected Void doInBackground(ProductModel... productModels) {
+            db.productDao().getProductCount();
+            Log.e("doInBackground: ", "Product Count" + db.productDao().getProductCount());
+            return null;
+        }
+    }
 }

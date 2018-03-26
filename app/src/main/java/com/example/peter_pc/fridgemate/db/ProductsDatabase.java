@@ -5,12 +5,10 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.example.peter_pc.fridgemate.models.ProductModel;
-
 /**
  * Created by Peter-PC on 3/6/2018.
  */
-@Database(entities = {ProductModel.class},version = 7)
+@Database(entities = {ProductModel.class},version = 8)
 public abstract class ProductsDatabase extends RoomDatabase {
     private static  ProductsDatabase INSTANCE;
 

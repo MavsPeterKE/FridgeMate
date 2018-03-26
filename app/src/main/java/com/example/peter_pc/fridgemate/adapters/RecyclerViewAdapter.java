@@ -4,30 +4,29 @@ package com.example.peter_pc.fridgemate.adapters;
  * Created by Peter on 12/7/17.
  */
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.models.ProductModel;
+import com.example.peter_pc.fridgemate.db.ProductModel;
 import com.example.peter_pc.fridgemate.utils.Methods;
 
-import java.lang.reflect.Method;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
 
     private List<ProductModel> products;
+    Context context;
 
 
-    public RecyclerViewAdapter(List<ProductModel> products) {
-        this.products=products;
+    public RecyclerViewAdapter(List<ProductModel> products, Context context) {
+        this.products = products;
+        this.context = context;
     }
 
     @Override
@@ -38,22 +37,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        ProductModel product =products.get(position);
+        ProductModel product = products.get(position);
         holder.tvProductName.setText(product.getProductName());
-        holder.tvExpDate.setText(""+product.getExpiryDate());
-       // holder.tvDayRem.setTextColor();
-        int days= (int)new Methods().getRemainingDays(product.getExpiryDate());
-        if (days<5) {
+        // holder.tvDayRem.setTextColor();
+        int days = (int) new Methods().getRemainingDays(product.getExpiryDate());
+        String dayFormat = " day left to expire";
+        if (days < 5) {
 
-            if (days<1){
+            if (days < 1) {
                 holder.tvDayRem.setText("Expired");
-                holder.tvDayRem.setTextColor(Color.BLACK);
-            }else {
-                holder.tvDayRem.setText("" +new Methods().getRemainingDays(product.getExpiryDate()) + " day (s) left to expire");
-                holder.tvDayRem.setTextColor(Color.RED);
+                holder.tvDayRem.setBackgroundColor(context.getResources().getColor(R.color.light_grey));
+            } else {
+                if (days > 1) {
+                    dayFormat = " days left to expire";
+                }
+                holder.tvDayRem.setText("" + new Methods().getRemainingDays(product.getExpiryDate()) + dayFormat);
+                holder.tvDayRem.setBackgroundColor(context.getResources().getColor(R.color.orange));
             }
-        }else {
+        } else {
+            dayFormat = " days left to expire";
             holder.tvDayRem.setText("" + new Methods().getRemainingDays(product.getExpiryDate()) + " day (s) left to expire");
+            holder.tvDayRem.setBackgroundColor(context.getResources().getColor(R.color.copia_green));
         }
 
     }
@@ -70,13 +74,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     static class RecyclerViewHolder extends RecyclerView.ViewHolder {
         private TextView tvProductName;
-        private TextView tvExpDate;
         private TextView tvDayRem;
 
         RecyclerViewHolder(View view) {
             super(view);
             tvProductName = view.findViewById(R.id.prodName);
-            tvExpDate = view.findViewById(R.id.dateTv);
             tvDayRem = view.findViewById(R.id.daysTv);
         }
     }

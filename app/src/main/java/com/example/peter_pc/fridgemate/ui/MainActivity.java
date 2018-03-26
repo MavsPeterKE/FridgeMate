@@ -3,6 +3,8 @@ package com.example.peter_pc.fridgemate.ui;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.models.ProductModel;
+import com.example.peter_pc.fridgemate.db.ProductModel;
+import com.example.peter_pc.fridgemate.utils.Methods;
 import com.example.peter_pc.fridgemate.utils.NotificationUtils;
 import com.example.peter_pc.fridgemate.viewmodels.ProductViewModel;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -30,25 +33,30 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener {
-    protected  @BindView(R.id.scanBarcode)      Button    btnScanBarcode;
-    protected  @BindView(R.id.scandate)         Button    btnScanDate;
-    protected  @BindView(R.id.itemName)         EditText  edtItemName;
-    protected  @BindView(R.id.tvitemHeader)     TextView  tvItemHeader;
-    protected  @BindView(R.id.tvSavedItems)     TextView  tvSavedProducts;
-    protected  @BindView(R.id.tvBcodeHeader)    TextView  tvBcodeHeader;
-    protected  @BindView(R.id.dateView)         TextView   tvExpDate;
-    protected  @BindView(R.id.fab)              FloatingActionButton fab;
-    protected  @BindView(R.id.datePicker)       DatePicker dtpicker;
+public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    protected @BindView(R.id.itemName)
+    EditText edtItemName;
+    protected @BindView(R.id.tvitemHeader)
+    TextView tvItemHeader;
+    protected @BindView(R.id.tvSavedItems)
+    TextView tvSavedProducts;
+    protected @BindView(R.id.tvBcodeHeader)
+    TextView tvBcodeHeader;
+    protected @BindView(R.id.dateView)
+    TextView tvExpDate;
+    protected @BindView(R.id.datePicker)
+    DatePicker dtpicker;
     private Date date;
     private DatePickerDialog datePickerDialog;
     private Calendar calendar;
-    private static String TAG="BarcodeResult";
+    private static String TAG = "BarcodeResult";
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final int RC_OCR_CAPTURE = 9003;
     private ProductViewModel productViewModel;
-    private String barCode,expiryDate;
-    private  String expiryTime;
+    private String barCode, expiryDate;
+    private String expiryTime;
+    Methods methods;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,50 +64,50 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         calendar = Calendar.getInstance();
-        datePickerDialog=new DatePickerDialog(this,MainActivity.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        productViewModel= ViewModelProviders.of(this).get(ProductViewModel.class);
-        NotificationUtils notify=new NotificationUtils(this);
-        //notify.notifyUser("Products About to Expire!",40,"Fruits and Drinks are almost expiring. Act");
-       // notify.inboxStyleNotification();
+        datePickerDialog = new DatePickerDialog(this, MainActivity.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
+        productViewModel.getProductsCount();
+        methods = new Methods();
+
     }
 
     @OnClick(R.id.tvSavedItems)
-    public void onTvSaveClick(){
-        startActivity(new Intent(this,RecyclerListActivity.class));
+    public void onTvSaveClick() {
+        startActivity(new Intent(this, RecyclerListActivity.class));
     }
 
     @OnClick(R.id.fab)
-           public void onFloatButtonClick(){
-                String item=edtItemName.getText().toString().trim();
-                if (!item.equals("")||!item.isEmpty()) {
-                    productViewModel.saveProduct(new ProductModel(item,barCode,expiryTime, "486 Remaining"));
-                }else {
-                    edtItemName.setError("Product Name Requirred");
-                }
+    public void onFloatButtonClick() {
+        String item = edtItemName.getText().toString().trim();
+        if (!item.equals("") || !item.isEmpty()) {
+            //productViewModel.saveProduct(new ProductModel(item, barCode, expiryTime, "486 Remaining"));
+            productViewModel.getProductsCount();
+        } else {
+            edtItemName.setError("Product Name Requirred");
+        }
     }
 
-    @OnClick({R.id.scandate,R.id.scanBarcode})
-           public void onButtonClick(View v){
-              switch (v.getId()){
-                  case R.id.scanBarcode:
-                     startBarcodeScanner();
-                      break;
-                  case R.id.scandate:
-                      startOcrScanner();
-                      //startActivity(new Intent(this,RecyclerListActivity.class));
-                      break;
+    @OnClick({R.id.scandate, R.id.scanBarcode})
+    public void onButtonClick(View v) {
+        switch (v.getId()) {
+            case R.id.scanBarcode:
+                startBarcodeScanner();
+                break;
+            case R.id.scandate:
+                startOcrScanner();
+                break;
 
-              }
+        }
     }
 
-    private void startBarcodeScanner(){
-               Intent intent=new Intent(this,BarcodeCaptureActivity.class);
-               startActivityForResult(intent,RC_BARCODE_CAPTURE);
+    private void startBarcodeScanner() {
+        Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+        startActivityForResult(intent, RC_BARCODE_CAPTURE);
     }
 
-    private void startOcrScanner(){
-        Intent intent=new Intent(this,OcrCaptureActivity.class);
-        startActivityForResult(intent,RC_OCR_CAPTURE);
+    private void startOcrScanner() {
+        Intent intent = new Intent(this, OcrCaptureActivity.class);
+        startActivityForResult(intent, RC_OCR_CAPTURE);
     }
 
 
@@ -111,10 +119,10 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                     Toast.makeText(this, "Scanned Successfully", Toast.LENGTH_SHORT).show();
                     tvBcodeHeader.setVisibility(View.VISIBLE);
-                    tvBcodeHeader.setText("Barcode: "+barcode.displayValue);
+                    tvBcodeHeader.setText("Barcode: " + barcode.displayValue);
                     tvItemHeader.setVisibility(View.VISIBLE);
-                    tvItemHeader.setText("ItemName: "+"Kasuku Book 200pgs");
-                    barCode=barcode.displayValue;
+                    tvItemHeader.setText("ItemName: " + "Kasuku Book 200pgs");
+                    barCode = barcode.displayValue;
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
 
                 } else {
@@ -125,14 +133,16 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
             } else {
                 Toast.makeText(this, "Error Scanning", Toast.LENGTH_SHORT).show();
             }
-        }else  if(requestCode == RC_OCR_CAPTURE) {
+        } else if (requestCode == RC_OCR_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
-                    Toast.makeText(this, "Scanned Successfully"+text, Toast.LENGTH_SHORT).show();
-                    //tvItemHeader.setVisibility(View.VISIBLE);
-                    //tvItemHeader.setText("Ocr: "+text);
-                    expiryDate=text;
+                    expiryDate = text;
+                    if (methods.getMonthNumber(text) != 0){
+                        Toast.makeText(this, text+" = "+methods.getMonthNumber(text), Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(this, "Invalid Date", Toast.LENGTH_SHORT).show();
+                    }
                     Log.d(TAG, "Text read: " + text);
                 } else {
                     tvItemHeader.setVisibility(View.GONE);
@@ -143,20 +153,20 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
             } else {
                 Toast.makeText(this, "Error Scanning", Toast.LENGTH_SHORT).show();
             }
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         date = calendar.getTime();
-        expiryTime= Objects.toString(date.getTime(),"0");
+        expiryTime = Objects.toString(date.getTime(), "0");
     }
 
 
