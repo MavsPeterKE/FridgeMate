@@ -1,14 +1,17 @@
-package com.example.peter_pc.fridgemate.db;
+package com.example.peter_pc.fridgemate.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.example.peter_pc.fridgemate.dao.ProductDao;
+import com.example.peter_pc.fridgemate.entity.ProductEntity;
+
 /**
  * Created by Peter-PC on 3/6/2018.
  */
-@Database(entities = {ProductModel.class},version = 8)
+@Database(entities = {ProductEntity.class},version = 9)
 public abstract class ProductsDatabase extends RoomDatabase {
     private static  ProductsDatabase INSTANCE;
 

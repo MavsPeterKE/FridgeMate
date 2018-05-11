@@ -1,4 +1,4 @@
-package com.example.peter_pc.fridgemate.db;
+package com.example.peter_pc.fridgemate.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -6,6 +6,8 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+
+import com.example.peter_pc.fridgemate.entity.ProductEntity;
 
 import java.util.List;
 
@@ -17,19 +19,19 @@ import java.util.List;
 public interface ProductDao {
 
     @Query("select * from products_table")
-    LiveData<List<ProductModel>> getAllProducts();
+    LiveData<List<ProductEntity>> getAllProducts();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertProduct(ProductModel product);
+    void insertProduct(ProductEntity product);
 
     @Query("SELECT COUNT(*) from products_table")
     int countProducts();
 
-    @Query("SELECT COUNT(` product_barcode`) from products_table Group By ` product_name`")
+    @Query("SELECT COUNT( 'product_barcode') from products_table Group By ` product_name`")
     int getProductCount();
 
     @Delete
-    void delete(ProductModel productModel);
+    void delete(ProductEntity productModel);
 
 }
 

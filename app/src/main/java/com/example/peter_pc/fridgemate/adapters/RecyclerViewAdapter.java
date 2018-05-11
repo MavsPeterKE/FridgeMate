@@ -5,7 +5,6 @@ package com.example.peter_pc.fridgemate.adapters;
  */
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +12,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.db.ProductModel;
+import com.example.peter_pc.fridgemate.entity.ProductEntity;
 import com.example.peter_pc.fridgemate.utils.Methods;
 
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
 
-    private List<ProductModel> products;
+    private List<ProductEntity> products;
     Context context;
 
 
-    public RecyclerViewAdapter(List<ProductModel> products, Context context) {
+    public RecyclerViewAdapter(List<ProductEntity> products, Context context) {
         this.products = products;
         this.context = context;
     }
@@ -37,7 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        ProductModel product = products.get(position);
+        ProductEntity product = products.get(position);
         holder.tvProductName.setText(product.getProductName());
         // holder.tvDayRem.setTextColor();
         int days = (int) new Methods().getRemainingDays(product.getExpiryDate());

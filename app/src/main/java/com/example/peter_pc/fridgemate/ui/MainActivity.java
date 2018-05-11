@@ -1,25 +1,29 @@
 package com.example.peter_pc.fridgemate.ui;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.db.ProductModel;
+import com.example.peter_pc.fridgemate.entity.ProductEntity;
+import com.example.peter_pc.fridgemate.notification.NotificationHelper;
 import com.example.peter_pc.fridgemate.utils.Methods;
-import com.example.peter_pc.fridgemate.utils.NotificationUtils;
+import com.example.peter_pc.fridgemate.utils.NotificationPublisher;
 import com.example.peter_pc.fridgemate.viewmodels.ProductViewModel;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     TextView tvExpDate;
     protected @BindView(R.id.datePicker)
     DatePicker dtpicker;
+    Context mContext;
     private Date date;
     private DatePickerDialog datePickerDialog;
     private Calendar calendar;
@@ -66,10 +71,21 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         calendar = Calendar.getInstance();
         datePickerDialog = new DatePickerDialog(this, MainActivity.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
-        productViewModel.getProductsCount();
+        //tvSavedProducts.setText("All Products"+productViewModel.getProductCount());
         methods = new Methods();
+        mContext=this;
 
     }
+
+
+    private Notification getNotification(String content) {
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle("Scheduled Notification");
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.badge_icon);
+        return builder.build();
+    }
+
 
     @OnClick(R.id.tvSavedItems)
     public void onTvSaveClick() {
@@ -80,10 +96,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public void onFloatButtonClick() {
         String item = edtItemName.getText().toString().trim();
         if (!item.equals("") || !item.isEmpty()) {
-            //productViewModel.saveProduct(new ProductModel(item, barCode, expiryTime, "486 Remaining"));
-            productViewModel.getProductsCount();
+            productViewModel.saveProduct(new ProductEntity(item, barCode, expiryTime, ""));
         } else {
-            edtItemName.setError("Product Name Requirred");
+            edtItemName.setError("Product Name Required");
         }
     }
 

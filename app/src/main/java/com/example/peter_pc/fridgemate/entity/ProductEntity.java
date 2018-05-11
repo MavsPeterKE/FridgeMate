@@ -1,4 +1,4 @@
-package com.example.peter_pc.fridgemate.db;
+package com.example.peter_pc.fridgemate.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
  */
 
 @Entity(tableName = "products_table")
-public class ProductModel {
+public class ProductEntity {
 
     //Defines your table fields
     @PrimaryKey(autoGenerate = true)
@@ -28,7 +28,7 @@ public class ProductModel {
     private String daysRemaining;
 
     //creates the class Constructor
-    public ProductModel(String productName, String productBcode, String expiryDate, String daysRemaining) {
+    public ProductEntity(String productName, String productBcode, String expiryDate, String daysRemaining) {
         this.productName = productName;
         this.productBcode = productBcode;
         this.expiryDate = expiryDate;

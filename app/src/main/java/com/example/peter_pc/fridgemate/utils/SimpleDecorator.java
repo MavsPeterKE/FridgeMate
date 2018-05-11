@@ -19,6 +19,7 @@ public class SimpleDecorator extends RecyclerView.ItemDecoration {
 
     public SimpleDecorator(Context context) {
         this.mDivider =context.getResources().getDrawable(R.drawable.recycler_list_layout);
+
     }
 
     @Override
