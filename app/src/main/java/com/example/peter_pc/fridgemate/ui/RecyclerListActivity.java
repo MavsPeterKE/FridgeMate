@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.peter_pc.fridgemate.R;
 import com.example.peter_pc.fridgemate.adapters.RecyclerViewAdapter;
-import com.example.peter_pc.fridgemate.entity.ProductEntity;
+import com.example.peter_pc.fridgemate.database.entity.ProductEntity;
 import com.example.peter_pc.fridgemate.notification.NotificationHelper;
 import com.example.peter_pc.fridgemate.utils.Constants;
 import com.example.peter_pc.fridgemate.utils.Methods;
@@ -23,13 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerListActivity extends AppCompatActivity {
+    Context mContext;
+    List<ProductEntity> product_models;
     private ProductViewModel productViewModel;
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    Context mContext;
-    List<ProductEntity> product_models;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,8 @@ public class RecyclerListActivity extends AppCompatActivity {
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
 
 
-        productViewModel.getItems().observe(RecyclerListActivity.this, new Observer<List<ProductEntity>>() {
+        productViewModel.getItems().observe(RecyclerListActivity.this, new
+                Observer<List<ProductEntity>>() {
             @Override
             public void onChanged(@Nullable List<ProductEntity> products) {
                 if (!products.isEmpty()) {
@@ -71,10 +71,12 @@ public class RecyclerListActivity extends AppCompatActivity {
         for (ProductEntity product : products) {
             daysLeftToExpire = new Methods().getRemainingDays(product.getExpiryDate());
             if (daysLeftToExpire >= 1 && daysLeftToExpire < 5) {
-                expiring_products.add(product.getProductName() + " " + daysLeftToExpire + Constants.DAYS_LEFT_TO_EXPIRE);
+                expiring_products.add(product.getProductName() + " " + daysLeftToExpire +
+                        Constants.DAYS_LEFT_TO_EXPIRE);
                 all_products_Expiring += 1;
-                //new NotificationUtils(this).inboxStyleNotification(expiring_products, all_products_Expiring, productsRemaining);
-                setScheduleNotification();
+                new NotificationUtils(this).inboxStyleNotification(expiring_products,
+                        all_products_Expiring, productsRemaining);
+                //setScheduleNotification();
             }
             if (daysLeftToExpire > 0 && daysLeftToExpire > 5) {
             }

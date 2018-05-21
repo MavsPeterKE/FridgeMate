@@ -1,4 +1,4 @@
-package com.example.peter_pc.fridgemate.entity;
+package com.example.peter_pc.fridgemate.database.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

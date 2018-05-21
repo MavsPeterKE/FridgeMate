@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.entity.ProductEntity;
+import com.example.peter_pc.fridgemate.database.entity.ProductEntity;
 import com.example.peter_pc.fridgemate.notification.NotificationHelper;
 import com.example.peter_pc.fridgemate.utils.Methods;
 import com.example.peter_pc.fridgemate.utils.NotificationPublisher;

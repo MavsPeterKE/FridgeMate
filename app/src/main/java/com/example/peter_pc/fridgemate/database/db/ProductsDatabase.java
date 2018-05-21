@@ -1,12 +1,12 @@
-package com.example.peter_pc.fridgemate.database;
+package com.example.peter_pc.fridgemate.database.db;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.example.peter_pc.fridgemate.dao.ProductDao;
-import com.example.peter_pc.fridgemate.entity.ProductEntity;
+import com.example.peter_pc.fridgemate.database.dao.ProductDao;
+import com.example.peter_pc.fridgemate.database.entity.ProductEntity;
 
 /**
  * Created by Peter-PC on 3/6/2018.

@@ -8,8 +8,8 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.peter_pc.fridgemate.entity.ProductEntity;
-import com.example.peter_pc.fridgemate.database.ProductsDatabase;
+import com.example.peter_pc.fridgemate.database.db.ProductsDatabase;
+import com.example.peter_pc.fridgemate.database.entity.ProductEntity;
 
 import java.util.List;
 
@@ -19,14 +19,11 @@ import java.util.List;
 
 public class ProductViewModel extends AndroidViewModel {
 
-    //creates database instance
-    private ProductsDatabase appDatabase;
-
-    Context context;
-
     //creates liveData instance
     private final LiveData<List<ProductEntity>> productsList;
-    //private final int allproducts;
+    Context context;
+    //creates database instance
+    private ProductsDatabase appDatabase;
 
     public ProductViewModel(@NonNull Application application) {
         super(application);
@@ -38,7 +35,6 @@ public class ProductViewModel extends AndroidViewModel {
 
     //expose liveData to other classes
     public LiveData<List<ProductEntity>> getItems() {
-
         return productsList;
     }
 
@@ -55,7 +51,7 @@ public class ProductViewModel extends AndroidViewModel {
 
     /*you cannot manipulate room from the main thread. This thread performs the database operation*/
     private static class insertProductAsync extends AsyncTask<ProductEntity, Void, Void> {
-
+        long row;
         private ProductsDatabase db;
 
         insertProductAsync(ProductsDatabase appDatabase) {
@@ -64,12 +60,24 @@ public class ProductViewModel extends AndroidViewModel {
 
         @Override
         protected Void doInBackground(final ProductEntity... params) {
-            db.productDao().insertProduct(params[0]);
-
-            Log.d("inserted", params[0].getProductName());
+            row = db.productDao().insertProduct(params[0]);
+            int count = db.productDao().countProducts();
+            Log.e("inserted__", "" + row);
+            Log.e("inCount__", "" + count);
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            longValue(row);
+
+        }
+        //new ProductViewModel.longVa
+
+        public long longValue(long row) {
+            return row;
+        }
     }
 
 }

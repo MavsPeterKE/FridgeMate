@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.entity.ProductEntity;
+import com.example.peter_pc.fridgemate.database.entity.ProductEntity;
 import com.example.peter_pc.fridgemate.utils.Methods;
 
 import java.util.List;
