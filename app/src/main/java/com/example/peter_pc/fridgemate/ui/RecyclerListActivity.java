@@ -8,26 +8,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.peter_pc.fridgemate.R;
-import com.example.peter_pc.fridgemate.adapters.RecyclerViewAdapter;
+import com.example.peter_pc.fridgemate.adapters.ProductsRecyclerAdapter;
 import com.example.peter_pc.fridgemate.database.entity.ProductEntity;
 import com.example.peter_pc.fridgemate.notification.NotificationHelper;
 import com.example.peter_pc.fridgemate.utils.Constants;
 import com.example.peter_pc.fridgemate.utils.Methods;
 import com.example.peter_pc.fridgemate.utils.NotificationUtils;
+import com.example.peter_pc.fridgemate.utils.RecyclerTouchListener;
 import com.example.peter_pc.fridgemate.utils.SimpleDecorator;
 import com.example.peter_pc.fridgemate.viewmodels.ProductViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class RecyclerListActivity extends AppCompatActivity {
     Context mContext;
     List<ProductEntity> product_models;
     private ProductViewModel productViewModel;
     private RecyclerView mRecyclerView;
-    private RecyclerViewAdapter mAdapter;
+    private ProductsRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
@@ -51,7 +56,7 @@ public class RecyclerListActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<ProductEntity> products) {
                 if (!products.isEmpty()) {
                     product_models = products;
-                    mAdapter = new RecyclerViewAdapter(products, getApplicationContext());
+                    mAdapter = new ProductsRecyclerAdapter(products, getApplicationContext());
                     mRecyclerView.addItemDecoration(new SimpleDecorator(getApplicationContext()));
                     mRecyclerView.setAdapter(mAdapter);
                     processNotificationDate(product_models);
@@ -59,6 +64,36 @@ public class RecyclerListActivity extends AppCompatActivity {
             }
 
         });
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
+
+
+            @Override
+            public void onClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongClick(View view, final int position) {
+                new SweetAlertDialog(RecyclerListActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setContentText("Product will be removed Completely")
+                        .setConfirmText("Yes,delete it!")
+                        .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                            }
+                        }).setConfirmButton("Okay", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        productViewModel.deleteProduct(product_models.get(position));
+                        Toast.makeText(mContext, "Product Deleted", Toast.LENGTH_SHORT).show();
+                        sweetAlertDialog.dismiss();
+                    }
+                }).show();
+            }
+        }));
 
 
     }

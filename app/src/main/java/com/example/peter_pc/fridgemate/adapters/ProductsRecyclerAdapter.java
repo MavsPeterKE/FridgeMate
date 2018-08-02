@@ -4,6 +4,7 @@ package com.example.peter_pc.fridgemate.adapters;
  * Created by Peter on 12/7/17.
  */
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,16 +15,16 @@ import android.widget.TextView;
 import com.example.peter_pc.fridgemate.R;
 import com.example.peter_pc.fridgemate.database.entity.ProductEntity;
 import com.example.peter_pc.fridgemate.utils.Methods;
+import com.example.peter_pc.fridgemate.viewmodels.ProductViewModel;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
+public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecyclerAdapter.RecyclerViewHolder> {
 
     private List<ProductEntity> products;
     Context context;
 
-
-    public RecyclerViewAdapter(List<ProductEntity> products, Context context) {
+    public ProductsRecyclerAdapter(List<ProductEntity> products, Context context) {
         this.products = products;
         this.context = context;
     }
@@ -38,7 +39,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
         ProductEntity product = products.get(position);
         holder.tvProductName.setText(product.getProductName());
-        // holder.tvDayRem.setTextColor();
+        holder.tvCount.setText(product.getDaysRemaining());
+
         int days = (int) new Methods().getRemainingDays(product.getExpiryDate());
         String dayFormat = " day left to expire";
         if (days < 5) {
@@ -74,11 +76,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     static class RecyclerViewHolder extends RecyclerView.ViewHolder {
         private TextView tvProductName;
         private TextView tvDayRem;
+        private TextView tvCount;
 
         RecyclerViewHolder(View view) {
             super(view);
             tvProductName = view.findViewById(R.id.prodName);
             tvDayRem = view.findViewById(R.id.daysTv);
+            tvCount = view.findViewById(R.id.tvCount);
         }
     }
 }

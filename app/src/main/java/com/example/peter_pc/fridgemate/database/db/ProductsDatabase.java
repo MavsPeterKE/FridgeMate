@@ -20,7 +20,7 @@ public abstract class ProductsDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(),  ProductsDatabase.class, "products_db")
-                            .fallbackToDestructiveMigration()
+                            .allowMainThreadQueries()
                             .build();
         }
         return INSTANCE;

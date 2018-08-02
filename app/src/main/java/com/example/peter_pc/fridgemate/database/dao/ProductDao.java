@@ -18,7 +18,8 @@ import java.util.List;
 @Dao
 public interface ProductDao {
 
-    @Query("select * from products_table")
+    @Query("select * from products_table group by ` product_barcode`" +
+            "")
     LiveData<List<ProductEntity>> getAllProducts();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -27,11 +28,12 @@ public interface ProductDao {
     @Query("SELECT COUNT(*) from products_table")
     int countProducts();
 
-    @Query("SELECT COUNT( 'product_barcode') from products_table Group By ` product_name`")
-    List<String> getProductCount();
+    @Query("SELECT COUNT( 'product_barcode') from products_table  WHERE ` product_barcode`=:barcode")
+    int getProductCount(String barcode);
+
 
     @Delete
-    void delete(ProductEntity productModel);
+    int delete(ProductEntity productModel);
 
 }
 

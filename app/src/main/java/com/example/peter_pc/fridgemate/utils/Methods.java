@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by peter-pc on 3/14/2018.
  */
 
-public class Methods {
+public  class Methods {
 
     //Computes days remaining for product to expire
     public long getRemainingDays(String expiryTime) {
@@ -61,5 +61,9 @@ public class Methods {
         }
 
         return monthNumber;
+    }
+
+    public boolean checkIfDateValid(){
+        return true;
     }
 }
